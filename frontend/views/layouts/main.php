@@ -34,7 +34,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'صفحه اصلی', 'url' => ['/site/index']],
-        ['label' => 'مدیریت پروژه ها', 'url' => ['/manage/list']],
+        ['label' => 'مدیریت پروژه ها', 'url' => ['/crawler-list/index']],
         ['label' => 'تماس با ما', 'url' => ['/site/contact']],
     ];
 
@@ -54,10 +54,21 @@ AppAsset::register($this);
     }
     NavBar::end();
     ?>
+    <style>
+        .breadcrumb-item + .breadcrumb-item::before{
+            float: right!important;
+        }
+    </style>
 </header>
 
 <main role="main" class="flex-shrink-0">
     <div class="container">
+        <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'options' => [
+                'style' => '--bs-breadcrumb-divider: ">"', // < here
+            ]
+        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

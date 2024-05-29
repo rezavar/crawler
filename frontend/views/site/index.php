@@ -6,4 +6,5 @@ $this->title = 'صفحه اصلی';
 ?>
 <div class="site-index">
    آمار کلی خزنده
+    <?=\Yii::$app->PDate->asDatetime('now')?>
 </div>
