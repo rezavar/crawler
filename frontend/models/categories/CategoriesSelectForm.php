@@ -1,11 +1,10 @@
 <?php
-namespace frontend\models\crawlers;
+namespace frontend\models\categories;
 
 use common\models\TreeMaker;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
 
-class Caregory extends Model
+class CategoriesSelectForm extends Model
 {
 
     public $category_list;

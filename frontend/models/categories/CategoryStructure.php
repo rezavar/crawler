@@ -1,9 +1,9 @@
 <?php
 
-namespace frontend\models\crawlers;
+namespace frontend\models\categories;
 
 
-class CrawlerCategoryStructure
+class CategoryStructure
 {
     private string $title='';
     private string $key='';
@@ -11,7 +11,7 @@ class CrawlerCategoryStructure
     private array $items=[];
 
 
-    public function setTitle(?string $title,$setKeyFromName =  true): CrawlerCategoryStructure
+    public function setTitle(?string $title,$setKeyFromName =  true): CategoryStructure
     {
        $this->title = $title;
        if($setKeyFromName)
@@ -19,7 +19,7 @@ class CrawlerCategoryStructure
        return $this;
     }
 
-    public function setLink(?string $link,$setKeyFromLink =  false): CrawlerCategoryStructure
+    public function setLink(?string $link,$setKeyFromLink =  false): CategoryStructure
     {
         $this->link = $link;
         if($setKeyFromLink)
@@ -27,7 +27,7 @@ class CrawlerCategoryStructure
         return $this;
     }
 
-    public function pushItems(CrawlerCategoryStructure $item): CrawlerCategoryStructure
+    public function pushItems(CategoryStructure $item): CategoryStructure
     {
         $this->items[] = $item->toArray();
         return $this;

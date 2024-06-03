@@ -2,15 +2,12 @@
 
 namespace frontend\controllers;
 
-use frontend\models\CrawlerList;
-use frontend\models\crawlers\CrawlerHelper;
+use frontend\models\crawlerList\CrawlerList;
+use frontend\models\crawlerList\CrawlerListSearch;
 use frontend\models\crawlers\Takhfifaneh;
-use frontend\models\CrawlerListSearch;
-use PHPHtmlParser\Dom;
-use yii\helpers\FileHelper;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\Response;
 
 

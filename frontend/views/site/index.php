@@ -1,5 +1,5 @@
 <?php
-use kartik\tree\TreeView;
+
 use common\models\TreeMaker;
 use kartik\icons\FontAwesomeAsset;
 use kartik\tree\TreeViewInput;
@@ -9,7 +9,7 @@ use yii\bootstrap5\Html;
 FontAwesomeAsset::register($this);
 
 /** @var yii\web\View $this */
-$model = new \frontend\models\crawlers\Caregory();
+$model = new \frontend\models\categories\CategoriesSelectForm();
 $this->title = 'صفحه اصلی';
 ?>
 <div class="site-index">

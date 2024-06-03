@@ -1,17 +1,18 @@
 <?php
 
 use common\models\CrawlerList;
-use yii\helpers\Html;
-use yii\helpers\Url;
+use kartik\icons\FontAwesomeAsset;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 //use kartik\icons\Icon;
-use kartik\icons\FontAwesomeAsset;
 FontAwesomeAsset::register($this);
 //Icon::map($this, Icon::FAS);
 
 /** @var yii\web\View $this */
-/** @var frontend\models\CrawlerListSearch $searchModel */
+/** @var \frontend\models\crawlerList\CrawlerListSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'لیست خزنده‌ها';

@@ -1,10 +1,10 @@
 <?php
 
-namespace frontend\models;
+namespace frontend\models\crawlerList;
 
+use common\models\CrawlerList;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\CrawlerList;
 
 /**
  * CrawlerListSearch represents the model behind the search form of `common\models\CrawlerList`.
