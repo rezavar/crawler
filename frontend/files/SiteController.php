@@ -1,6 +1,5 @@
 <?php
 
-namespace frontend\controllers;
 
 use frontend\models\ContactForm;
 use frontend\models\crawler\Caregory;

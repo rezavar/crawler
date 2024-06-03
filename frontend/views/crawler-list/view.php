@@ -1,5 +1,6 @@
 <?php
 
+use common\models\CrawlerList;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -21,8 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3><?= Html::encode($this->title) ?></h3>
 
     <p>
-        <?= Html::a('ویرایش', ['update', 'IdCrawlerList' => $model->IdCrawlerList], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('حذف', ['delete', 'IdCrawlerList' => $model->IdCrawlerList], [
+        <?= Html::a('ویرایش', ['update', 'CrawlerListId' => $model->CrawlerListId], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('حذف', ['delete', 'CrawlerListId' => $model->CrawlerListId], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -35,15 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'id'=>'view_crawler_by_id',
         'attributes' => [
-            'IdCrawlerList',
+            'CrawlerListId',
             'Url:url',
             'CreateDate',
             [
-                'attribute' =>'UpdateDate',
+                'attribute' =>'Status',
                 'value' => function ($model) {
-                    return $model->UpdateDate ? $model->UpdateDate: 'بدون بروز رسانی';
+                    return CrawlerList::Status_str($model->Status);
                 }
-            ],
+            ]
         ],
     ]) ?>
 

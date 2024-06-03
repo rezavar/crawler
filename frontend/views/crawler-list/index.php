@@ -5,6 +5,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+//use kartik\icons\Icon;
+use kartik\icons\FontAwesomeAsset;
+FontAwesomeAsset::register($this);
+//Icon::map($this, Icon::FAS);
 
 /** @var yii\web\View $this */
 /** @var frontend\models\CrawlerListSearch $searchModel */
@@ -12,6 +16,7 @@ use yii\grid\GridView;
 
 $this->title = 'لیست خزنده‌ها';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="crawler-list-index">
 
@@ -21,23 +26,30 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('ایجاد یک خزنده', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<!--    --><?php //echo Icon::show('eye', [ 'framework' => Icon::FA]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'IdCrawlerList',
+            'CrawlerListId',
             'Name',
             'Url:url',
             'CreateDate',
-            'UpdateDate',
+            [
+                'attribute' =>'Status',
+                'filter'=>CrawlerList::Status_Arr(),
+                'value' => function ($model) {
+                    return CrawlerList::Status_str($model->Status);
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
+                'template' => '{update} {view}',
                 'urlCreator' => function ($action, CrawlerList $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'IdCrawlerList' => $model->IdCrawlerList]);
+                    return Url::toRoute([$action, 'CrawlerListId' => $model->CrawlerListId]);
                  }
-            ],
+            ]
         ],
     ]); ?>
 

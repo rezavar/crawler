@@ -2,20 +2,21 @@
 
 namespace frontend\controllers;
 
-use common\models\CrawlerList;
+use frontend\models\CrawlerList;
+use frontend\models\crawlers\CrawlerHelper;
+use frontend\models\crawlers\Takhfifaneh;
 use frontend\models\CrawlerListSearch;
+use PHPHtmlParser\Dom;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
-/**
- * CrawlerListController implements the CRUD actions for CrawlerList model.
- */
+
 class CrawlerListController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
+
     public function behaviors()
     {
         return array_merge(
@@ -31,11 +32,7 @@ class CrawlerListController extends Controller
         );
     }
 
-    /**
-     * Lists all CrawlerList models.
-     *
-     * @return string
-     */
+
     public function actionIndex()
     {
         $searchModel = new CrawlerListSearch();
@@ -47,54 +44,55 @@ class CrawlerListController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single CrawlerList model.
-     * @param int $IdCrawlerList شناسه خزنده
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($IdCrawlerList)
+    public function actionTest()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $t = new Takhfifaneh();
+        $list =$t->ParsCategory();
+        $t->saveCategory($list);
+        return $list;
+
+    }
+
+
+    public function actionView($CrawlerListId)
     {
         return $this->render('view', [
-            'model' => $this->findModel($IdCrawlerList),
+            'model' => $this->findModel($CrawlerListId),
         ]);
     }
 
-    /**
-     * Creates a new CrawlerList model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
+    protected function findModel($CrawlerListId)
+    {
+        if (($model = CrawlerList::findOne(['CrawlerListId' => $CrawlerListId])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
     public function actionCreate()
     {
         $model = new CrawlerList();
+        $model->setScenarioInsert();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'IdCrawlerList' => $model->IdCrawlerList]);
+        if (\Yii::$app->request->isPost) {
+            if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save()) {
+                return $this->redirect(['view', 'CrawlerListId' => $model->CrawlerListId]);
+
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
         return $this->render('create', [
-            'model' => $model,
+            'model' => $model
         ]);
     }
 
-    /**
-     * Updates an existing CrawlerList model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $IdCrawlerList شناسه خزنده
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($IdCrawlerList)
+    public function actionUpdate($CrawlerListId)
     {
-        $model = $this->findModel($IdCrawlerList);
-
+        $model = $this->findModel($CrawlerListId);
+        $model->setScenarioUpdate();
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'IdCrawlerList' => $model->IdCrawlerList]);
+            return $this->redirect(['view', 'CrawlerListId' => $model->CrawlerListId]);
         }
 
         return $this->render('update', [
@@ -102,33 +100,10 @@ class CrawlerListController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing CrawlerList model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $IdCrawlerList شناسه خزنده
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($IdCrawlerList)
+    public function actionDelete($CrawlerListId)
     {
-        $this->findModel($IdCrawlerList)->delete();
+        $this->findModel($CrawlerListId)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the CrawlerList model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $IdCrawlerList شناسه خزنده
-     * @return CrawlerList the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($IdCrawlerList)
-    {
-        if (($model = CrawlerList::findOne(['IdCrawlerList' => $IdCrawlerList])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

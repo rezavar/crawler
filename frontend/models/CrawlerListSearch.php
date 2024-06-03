@@ -17,8 +17,8 @@ class CrawlerListSearch extends CrawlerList
     public function rules()
     {
         return [
-            [['IdCrawlerList'], 'integer'],
-            [['Name', 'Url', 'CreateDate', 'UpdateDate'], 'safe'],
+            [['CrawlerListId'], 'integer'],
+            [['Name', 'Url', 'CreateDate','Status'], 'safe'],
         ];
     }
 
@@ -58,13 +58,15 @@ class CrawlerListSearch extends CrawlerList
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'IdCrawlerList' => $this->IdCrawlerList,
+            'CrawlerListId' => $this->CrawlerListId,
+        ]);
+        $query->andFilterWhere([
+            'Status' => $this->Status,
         ]);
 
         $query->andFilterWhere(['like', 'Name', $this->Name])
             ->andFilterWhere(['like', 'Url', $this->Url])
-            ->andFilterWhere(['like', 'CreateDate', $this->CreateDate])
-            ->andFilterWhere(['like', 'UpdateDate', $this->UpdateDate]);
+            ->andFilterWhere(['like', 'CreateDate', $this->CreateDate]);
 
         return $dataProvider;
     }

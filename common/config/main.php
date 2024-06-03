@@ -4,11 +4,15 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'homeUrl'=>'http://crawler.test/',
     'name' => 'خزنده وب',
     'language' => 'fa-IR',
     'sourceLanguage'=>'fa-IR',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'modules' => [
+        'treemanager' =>  [
+            'class' => '\kartik\tree\Module',
+        ]
+    ],
     'components' => [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
@@ -22,6 +26,13 @@ return [
             'timeFormat' => 'php:H:i:s',
             'defaultTimeZone' => 'Asia/Tehran',
             'timeZone' => 'Asia/Tehran',
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false
+                ],
+            ],
         ],
     ],
 ];

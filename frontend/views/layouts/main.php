@@ -34,7 +34,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'صفحه اصلی', 'url' => ['/site/index']],
-        ['label' => 'مدیریت پروژه ها', 'url' => ['/crawler-list/index']],
+        ['label' => 'لیست خزنده ها', 'url' => ['/crawler-list/index']],
         ['label' => 'تماس با ما', 'url' => ['/site/contact']],
     ];
 

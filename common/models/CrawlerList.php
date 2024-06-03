@@ -7,20 +7,41 @@ use Yii;
 /**
  * This is the model class for table "tbl_crawler_list".
  *
- * @property int $IdCrawlerList شناسه خزنده
+ * @property int $CrawlerListId شناسه خزنده
+ * @property string $CrawlerListKey شناسه لینک
  * @property string $Name نام خزنده
  * @property string $Url آدرس وب
  * @property string $CreateDate تاریخ ایجاد
- * @property string $UpdateDate تاریخ ویرایش
+ * @property int $Status تاریخ ویرایش
  */
 class CrawlerList extends \yii\db\ActiveRecord
 {
+    const Disable = 0;
+    const Enable = 1;
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'tbl_crawler_list';
+    }
+
+    public static function Status_Str($Status): string
+    {
+        if ($Status == self::Enable)
+            return 'فعال';
+        if ($Status == self::Disable)
+            return 'غیر‌فعال';
+        return $Status . '';
+    }
+
+    public static function Status_Arr(): array
+    {
+        return [
+            self::Enable => 'فعال',
+            self::Disable => 'غیر‌فعال'
+        ];
     }
 
     /**
@@ -30,12 +51,18 @@ class CrawlerList extends \yii\db\ActiveRecord
     {
         return [
             [['Name', 'Url'], 'required'],
-            [['Name'], 'string', 'max' => 200],
-            [['Url'], 'string', 'max' => 500],
+            ['Status', 'integer'],
+            [['Name'], 'string', 'max' => 200,'min'=>5],
+            [['Url'], 'string', 'max' => 500,'min'=>6],
             ['Url', 'url'],
-            [['CreateDate', 'UpdateDate'], 'string', 'max' => 20],
+            ['Url', 'filter', 'filter' => 'trim'],
+            ['Url', 'filter', 'filter' => fn($value) => rtrim($value,'/')],
+            [['CreateDate'], 'string', 'max' => 20],
             ['CreateDate', 'default', 'value' => \Yii::$app->PDate->asDatetime('now')],
-            ['UpdateDate', 'default', 'value' => '']
+            ['Status', 'default', 'value' => self::Disable],
+            ['CrawlerListKey', 'filter', 'filter' => function () {
+                return md5($this->Url);
+            }],
         ];
     }
 
@@ -45,11 +72,12 @@ class CrawlerList extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'IdCrawlerList' => 'شناسه خزنده',
+            'CrawlerListId' => 'شناسه خزنده',
+            'CrawlerListKey' => 'شناسه لینک',
             'Name' => 'نام خزنده',
             'Url' => 'آدرس وب',
             'CreateDate' => 'تاریخ ایجاد',
-            'UpdateDate' => 'تاریخ ویرایش',
+            'Status' => 'وضعیت'
         ];
     }
 }

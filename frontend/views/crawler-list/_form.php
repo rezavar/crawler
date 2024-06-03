@@ -14,13 +14,25 @@ use yii\helpers\Html;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'Name')->textInput(['maxlength' => true,'autofocus' => true]) ?>
+    <?= $form->field($model, 'Name')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
 
-    <?= $form->field($model, 'Url')->textInput(['maxlength' => true,'style'=>'direction:ltr']) ?>
+    <?= $form->field($model, 'Url')->textInput(['maxlength' => true, 'style' => 'direction:ltr']) ?>
 
-    <div class="form-group mt-3">
+    <?php
+    if (isset($formType) && $formType == 'update' )
+        echo $form->field($model, 'Status')->dropDownList($model::Status_Arr());
+    ?>
+
+
+        <?= $form->field($model, 'FileCategory')->fileInput() ?>
+
+        <?= $form->field($model, 'FileProductList')->fileInput() ?>
+
+        <?= $form->field($model, 'FileProductDetails')->fileInput() ?>
+
+
         <?= Html::submitButton('ذخیره', ['class' => 'btn btn-success']) ?>
-    </div>
+
 
     <?php ActiveForm::end(); ?>
 
