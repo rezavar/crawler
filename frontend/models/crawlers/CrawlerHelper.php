@@ -37,7 +37,8 @@ class CrawlerHelper
 
         $name = $node['title'];
         $key = @$node['key'] ?? '';
-        $leaf = new TreeMaker(['name' => $name, 'crawlerListIdRef' => $crawlerListIdRef, 'key' => $key]);
+        $url = @$node['link'] ?? '';
+        $leaf = new TreeMaker(['name' => $name, 'crawlerListIdRef' => $crawlerListIdRef, 'key' => $key,'url'=>$url]);
         if (empty($tree))
             $leaf->makeRoot();
         else

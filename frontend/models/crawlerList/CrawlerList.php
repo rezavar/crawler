@@ -3,6 +3,7 @@
 namespace frontend\models\crawlerList;
 
 
+use yii\db\IntegrityException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
@@ -10,6 +11,11 @@ use yii\web\UploadedFile;
 
 class CrawlerList extends \common\models\CrawlerList
 {
+    /**
+     * @var $FileCategory UploadedFile
+     * @var $FileProductList UploadedFile
+     * @var $FileProductDetails UploadedFile
+     */
     public $FileCategory;
     public $FileProductList;
     public $FileProductDetails;
@@ -75,28 +81,11 @@ class CrawlerList extends \common\models\CrawlerList
     public function validate($attributeNames = null, $clearErrors = true): bool
     {
         if (parent::validate($attributeNames, $clearErrors))
-            if ($this->validateFileCategory())
-                if ($this->validateFileProductList())
-                    if ($this->validateFileProductDetails()) {
+            if ($this->validateFile($this->FileCategory,'FileCategory'))
+                if ($this->validateFile($this->FileProductList,'FileProductList'))
+                    if ($this->validateFile($this->FileProductDetails,'FileProductDetails'))
                         return true;
-                    }
         return false;
-    }
-
-    private function validateFileCategory(): bool
-    {
-        if (empty($this->FileCategory))
-            return true;
-        $content = $this->getFileContent($this->FileCategory->tempName);
-        if (strpos($content, 'extend Cr') == false) {
-            $this->addError('FileCategory', 'وراثت اشتباه');
-            return false;
-        }
-        if (strpos($content, 'function ParsCategory()') == false) {
-            $this->addError('FileCategory', 'تابع کامل نمیباشد');
-            return false;
-        }
-        return true;
     }
 
     private function getFileContent($fileName): string
@@ -108,33 +97,21 @@ class CrawlerList extends \common\models\CrawlerList
         return preg_replace('/>\s+/', '>', $content);
     }
 
-    private function validateFileProductList(): bool
+    private function validateFile($File,$field): bool
     {
-        if (empty($this->FileProductList))
+        if (empty($File))
             return true;
-        $content = $this->getFileContent($this->FileProductList->tempName);
-        if (strpos($content, 'extend Cr') == false) {
-            $this->addError('FileProductList', 'وراثت اشتباه');
+        $content = $this->getFileContent($File->tempName);
+        if (strpos($content, 'namespace ')) {
+            $this->addError($field, 'فایل نباید namespace  داشته باشد');
             return false;
         }
-        if (strpos($content, 'function ParsCategory()') == false) {
-            $this->addError('FileProductList', 'تابع کامل نمیباشد');
+        if (!strpos($content, 'class '.$field)) {
+            $this->addError($field, 'نام کلاس صحیح نمی‌باشد');
             return false;
         }
-        return true;
-    }
-
-    private function validateFileProductDetails(): bool
-    {
-        if (empty($this->FileProductDetails))
-            return true;
-        $content = $this->getFileContent($this->FileProductDetails->tempName);
-        if (strpos($content, 'extend Cr') == false) {
-            $this->addError('FileProductDetails', 'وراثت اشتباه');
-            return false;
-        }
-        if (strpos($content, 'function ParsCategory()') == false) {
-            $this->addError('FileProductDetails', 'تابع کامل نمیباشد');
+        if (!strpos($content, 'public function fetch(')) {
+            $this->addError($field, 'تابع fetch کامل نمی باشد');
             return false;
         }
         return true;
@@ -150,9 +127,21 @@ class CrawlerList extends \common\models\CrawlerList
         return $delete;
     }
 
-    public function getDirectoryPath()
+    public function getDirectoryPath(): string
     {
-        return '../models/crawlers/sites/' . $this->CrawlerListId . '/';
+        return '../models/crawlers/sites/_' . $this->CrawlerListId . '/';
+    }
+    public function getNameSpace(): string
+    {
+        return 'namespace frontend\models\crawlers\sites\_'.$this->CrawlerListId.";";
+    }
+
+    private function addNameSpaceToFile($fileName)
+    {
+        $content = $this->getFileContent($fileName);
+        $newNameSpace = "<?php \r\n".$this->getNameSpace();
+        $content = str_replace("<?php",$newNameSpace,$content);
+        file_put_contents($fileName, $content);
     }
 
     public function save($runValidation = true, $attributeNames = null)
@@ -164,24 +153,37 @@ class CrawlerList extends \common\models\CrawlerList
                     $transaction->commit();
                     return true;
                 }
-        } catch (\Exception $e) {
+        }
+        catch (IntegrityException $e){
+            $this->addError('Url', 'آدرس تکراری است');
+        }
+        catch (\Exception $e) {
         } catch (\Throwable $t) {
         }
         $transaction->rollBack();
+        $path = $this->getDirectoryPath();
+        FileHelper::removeDirectory($path);
         return false;
     }
+
 
     private function saveFiles(): bool
     {
         $dir = $this->getDirectoryPath();
         if (!is_dir($dir))
             FileHelper::createDirectory($dir, 0777);;
-        if (!empty($this->FileCategory))
+        if (!empty($this->FileCategory)) {
+            $this->addNameSpaceToFile($this->FileCategory->tempName);
             $this->FileCategory->saveAs($dir . "/FileCategory.php");
-        if (!empty($this->FileProductDetails))
+        }
+        if (!empty($this->FileProductDetails)) {
+            $this->addNameSpaceToFile($this->FileProductDetails->tempName);
             $this->FileProductDetails->saveAs($dir . "/FileProductDetails.php");
-        if (!empty($this->FileProductList))
+        }
+        if (!empty($this->FileProductList)) {
+            $this->addNameSpaceToFile($this->FileProductList->tempName);
             $this->FileProductList->saveAs($dir . "/FileProductList.php");
+        }
         return true;
     }
 

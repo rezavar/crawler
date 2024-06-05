@@ -9,7 +9,7 @@ class TreeMaker extends \kartik\tree\models\Tree
 {
     public static function tableName()
     {
-        return 'tbl_tree';
+        return 'tbl_tmp_category';
     }
 
     public function rules()

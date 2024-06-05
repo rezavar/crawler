@@ -4,7 +4,7 @@ namespace frontend\controllers;
 
 use frontend\models\crawlerList\CrawlerList;
 use frontend\models\crawlerList\CrawlerListSearch;
-use frontend\models\crawlers\Takhfifaneh;
+use frontend\models\crawlers\sites\Takhfifaneh;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

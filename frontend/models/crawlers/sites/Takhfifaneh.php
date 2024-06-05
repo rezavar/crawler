@@ -1,9 +1,10 @@
 <?php
 
-namespace frontend\models\crawlers;
+namespace frontend\models\crawlers\sites;
 
 use common\models\TreeMaker;
 use frontend\models\categories\CategoryStructure;
+use frontend\models\crawlers\CrawlerHelper;
 
 class Takhfifaneh
 {

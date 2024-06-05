@@ -2,9 +2,7 @@
 
 namespace frontend\controllers;
 
-use frontend\models\ContactForm;
-use frontend\models\crawler\Caregory;
-use frontend\models\crawler\CrawlerHelper;
+use frontend\models\categories\CategoriesSelectForm;
 use frontend\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -58,7 +56,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         if(\Yii::$app->request->isPost){
-            $cat = new Caregory();
+            $cat = new CategoriesSelectForm();
             $cat->load(\Yii::$app->request->post());
             $cat->validate();
             $cat->save();

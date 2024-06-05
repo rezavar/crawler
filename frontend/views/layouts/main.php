@@ -34,7 +34,8 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'صفحه اصلی', 'url' => ['/site/index']],
-        ['label' => 'لیست خزنده ها', 'url' => ['/crawler-list/index']],
+        ['label' => 'لیست خزنده‌ها', 'url' => ['/crawler-list/index']],
+        ['label' => 'دسته‌ها', 'url' => ['/categories/index']],
         ['label' => 'تماس با ما', 'url' => ['/site/contact']],
     ];
 
@@ -64,9 +65,13 @@ AppAsset::register($this);
 <main role="main" class="flex-shrink-0">
     <div class="container">
         <?= Breadcrumbs::widget([
+            'homeLink' => [
+                'label' => 'صفحه اصلی',
+                'url' => '/site/index',
+            ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             'options' => [
-                'style' => '--bs-breadcrumb-divider: ">"', // < here
+                'style' => '--bs-breadcrumb-divider: ">"',
             ]
         ]) ?>
         <?= Alert::widget() ?>

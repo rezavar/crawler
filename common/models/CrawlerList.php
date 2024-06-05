@@ -55,7 +55,7 @@ class CrawlerList extends \yii\db\ActiveRecord
             [['Name'], 'string', 'max' => 200,'min'=>5],
             [['Url'], 'string', 'max' => 500,'min'=>6],
             ['Url', 'url'],
-            ['Url', 'filter', 'filter' => 'trim'],
+            [['Url','Name'], 'filter', 'filter' => 'trim'],
             ['Url', 'filter', 'filter' => fn($value) => rtrim($value,'/')],
             [['CreateDate'], 'string', 'max' => 20],
             ['CreateDate', 'default', 'value' => \Yii::$app->PDate->asDatetime('now')],
