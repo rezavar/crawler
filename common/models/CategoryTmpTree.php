@@ -5,8 +5,24 @@ namespace common\models;
 use Yii;
 use creocoder\nestedsets\NestedSetsBehavior;
 
-class TreeMaker extends \kartik\tree\models\Tree
+class CategoryTmpTree extends \kartik\tree\models\Tree
 {
+    public $icon_type=1;
+    public $active=1;
+    public $selected=0;
+    public $disabled=0;
+    public $readonly=1;
+    public  $visible=1;
+    public  $collapsed=0;
+    public  $movable_u=0;
+    public  $movable_d=0;
+    public  $movable_l=0;
+    public  $movable_r=0;
+    public  $removable=0;
+    public  $removable_all=0;
+    public  $child_allowed=0;
+    public  $icon=null;
+
     public static function tableName()
     {
         return 'tbl_tmp_category';

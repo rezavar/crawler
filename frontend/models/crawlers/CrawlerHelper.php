@@ -2,7 +2,7 @@
 
 namespace frontend\models\crawlers;
 
-use common\models\TreeMaker;
+use common\models\CategoryTmpTree;
 use PHPHtmlParser\Dom;
 
 class CrawlerHelper
@@ -38,7 +38,7 @@ class CrawlerHelper
         $name = $node['title'];
         $key = @$node['key'] ?? '';
         $url = @$node['link'] ?? '';
-        $leaf = new TreeMaker(['name' => $name, 'crawlerListIdRef' => $crawlerListIdRef, 'key' => $key,'url'=>$url]);
+        $leaf = new CategoryTmpTree(['name' => $name, 'crawlerListIdRef' => $crawlerListIdRef, 'key' => $key,'url'=>$url]);
         if (empty($tree))
             $leaf->makeRoot();
         else

@@ -7,9 +7,8 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-//use kartik\icons\Icon;
 FontAwesomeAsset::register($this);
-//Icon::map($this, Icon::FAS);
+
 
 /** @var yii\web\View $this */
 /** @var \frontend\models\crawlerList\CrawlerListSearch $searchModel */

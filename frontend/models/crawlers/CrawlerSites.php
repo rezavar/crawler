@@ -2,7 +2,7 @@
 
 namespace frontend\models\crawlers;
 
-use common\models\TreeMaker;
+use common\models\CategoryTmpTree;
 use frontend\models\crawlerList\CrawlerList;
 use frontend\models\crawlers\sites\FileCategory;
 use yii\helpers\ArrayHelper;
@@ -25,7 +25,7 @@ class CrawlerSites
             $class = '\frontend\models\crawlers\sites\_'.$id.'\FileCategory';
             $crawl = \Yii::createObject($class);
             $list = $crawl->fetch($siteUrl->Url,$siteUrl->Name);
-            TreeMaker::deleteAll(['CrawlerListIdRef'=>$id]);
+            CategoryTmpTree::deleteAll(['CrawlerListIdRef'=>$id]);
             CrawlerHelper::makeTree($list,$id);
         }
 

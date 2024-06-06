@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Category;
+use common\models\CategoryTmpTree;
 use frontend\models\crawlerList\CrawlerListSearch;
 use frontend\models\crawlers\CrawlerSites;
 use yii\filters\VerbFilter;
@@ -38,9 +40,15 @@ class CategoriesController extends Controller
         ]);
     }
 
-    public function actionUpdateAll()
+    public function actionUpdateCategory($CrawlerListId)
     {
-        (new CrawlerSites())->UpdateCategoriesOfSites();
+        (new CrawlerSites())->UpdateCategoriesOfSites($CrawlerListId);
+        (new Category())->FillFromTmpCategory($CrawlerListId);
+        return $this->render('update-category', [
+            'newTreeQuery' => CategoryTmpTree::find()->andWhere(['crawlerListIdRef'=>$CrawlerListId])->addOrderBy('root, lft')
+        ]);
+
     }
+
 
 }

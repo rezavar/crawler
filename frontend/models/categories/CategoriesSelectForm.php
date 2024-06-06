@@ -1,7 +1,7 @@
 <?php
 namespace frontend\models\categories;
 
-use common\models\TreeMaker;
+use common\models\CategoryTmpTree;
 use yii\base\Model;
 
 class CategoriesSelectForm extends Model
@@ -27,10 +27,10 @@ class CategoriesSelectForm extends Model
 
     public function save()
     {
-        TreeMaker::UpdateAll(['selected'=>0]);
+        CategoryTmpTree::UpdateAll(['selected'=>0]);
         $this->category_list = array_chunk($this->category_list,50);
         foreach ($this->category_list as $list)
-            TreeMaker::UpdateAll(['selected'=>1],['in','id',$list]);
+            CategoryTmpTree::UpdateAll(['selected'=>1],['in','id',$list]);
     }
 
 }

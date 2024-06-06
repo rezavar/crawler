@@ -2,7 +2,7 @@
 
 namespace frontend\models\crawlers\sites;
 
-use common\models\TreeMaker;
+use common\models\CategoryTmpTree;
 use frontend\models\categories\CategoryStructure;
 use frontend\models\crawlers\CrawlerHelper;
 
@@ -48,7 +48,7 @@ class Takhfifaneh
 
     public function saveCategory($list)
     {
-        TreeMaker::deleteAll(['CrawlerListIdRef'=>1]);
+        CategoryTmpTree::deleteAll(['CrawlerListIdRef'=>1]);
         CrawlerHelper::makeTree($list,1);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-use common\models\TreeMaker;
+use common\models\CategoryTmpTree;
 use kartik\icons\FontAwesomeAsset;
 use kartik\tree\TreeViewInput;
 use yii\bootstrap5\ActiveForm;
@@ -28,7 +28,7 @@ $this->title = 'صفحه اصلی';
             [
                 'name' => 'category_list',
                 'value' => 'true', // preselected values
-                'query' => TreeMaker::find()->addOrderBy('root, lft'),
+                'query' => CategoryTmpTree::find()->addOrderBy('root, lft'),
                 'headingOptions' => ['label' => 'دسته بندی ها'],
                 'rootOptions' => ['label'=>''],
                 'fontAwesome' => false,
