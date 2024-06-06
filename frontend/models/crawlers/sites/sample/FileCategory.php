@@ -1,5 +1,7 @@
 <?php
 
+namespace frontend\models\crawlers\sites\_14;
+
 use frontend\models\categories\CategoryStructure;
 use frontend\models\crawlers\CrawlerHelper;
 
