@@ -12,24 +12,8 @@ use yii\helpers\Url;
 use yii\web\Controller;
 
 
-class CategoriesController extends Controller
+class ProductListController extends Controller
 {
-
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
-
 
     public function actionIndex()
     {
@@ -44,8 +28,8 @@ class CategoriesController extends Controller
 
     public function actionUpdate($CrawlerListId)
     {
-        (new CrawlerSites())->UpdateCategoriesOfSites($CrawlerListId);
-        (new Category())->FillFromTmpCategory($CrawlerListId);
+//        (new CrawlerSites())->UpdateCategoriesOfSites($CrawlerListId);
+//        (new Category())->FillFromTmpCategory($CrawlerListId);
         $this->redirect(['update-category','CrawlerListId'=>$CrawlerListId]);
     }
 
