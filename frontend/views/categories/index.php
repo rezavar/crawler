@@ -14,6 +14,12 @@ $this->title = 'دسته بندی‌ها';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+<style>
+    .operation{
+        display: flex;
+        justify-content: space-around;
+    }
+</style>
 <div class="categories-index">
 
     <h3><?= Html::encode($this->title) ?></h3>
@@ -31,13 +37,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'CreateDate',
             [
                 'class' => ActionColumn::class,
-                'template' => '{update-category} {view}',
+                'template' => '{update} {update-category}',
                 'urlCreator' => function ($action, CrawlerList $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'CrawlerListId' => $model->CrawlerListId]);
                 },
+                'contentOptions'=>['class'=>'operation'],
                 'buttons' => [
-                    'update-category' => function ($url, $model) {
-                        return Html::a('<i class="fas fa-retweet text-success"></i>', $url, [
+                    'update' => function ($url, $model) {
+                        return Html::a('<i class="fas fa-retweet text-warning"></i>', $url, [
+                            'title' => 'بروز رسانی دسته ها',
+                            'onclick'=>"return confirm('برای بروز رسانی دسته ها مطمین هستید?')"
+                        ]);
+                    },
+                    'update-category'=>function ($url, $model) {
+                        return Html::a('<i class="fas fa-eye text-success"></i>', $url, [
                             'title' => 'بروز رسانی دسته ها',
                         ]);
                     },

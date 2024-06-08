@@ -30,7 +30,7 @@ class CrawlerHelper
 
     }
 
-    public static function makeTree($node, $crawlerListIdRef, $tree = null)
+    public static function makeTree($node, $CrawlerListIdRef, $tree = null)
     {
         if (empty($node))
             return;
@@ -38,7 +38,7 @@ class CrawlerHelper
         $name = $node['title'];
         $key = @$node['key'] ?? '';
         $url = @$node['link'] ?? '';
-        $leaf = new CategoryTmpTree(['name' => $name, 'crawlerListIdRef' => $crawlerListIdRef, 'key' => $key,'url'=>$url]);
+        $leaf = new CategoryTmpTree(['name' => $name, 'CrawlerListIdRef' => $CrawlerListIdRef, 'key' => $key,'url'=>$url]);
         if (empty($tree))
             $leaf->makeRoot();
         else
@@ -46,7 +46,7 @@ class CrawlerHelper
 
         if (!empty($node['items']))
             foreach ($node['items'] as $item)
-                self::makeTree($item, $crawlerListIdRef, $leaf);
+                self::makeTree($item, $CrawlerListIdRef, $leaf);
     }
 
 }

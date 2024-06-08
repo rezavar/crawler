@@ -31,8 +31,8 @@ class CategoryTmpTree extends \kartik\tree\models\Tree
     public function rules()
     {
         return [
-            [['root','lft','rgt','lvl','crawlerListIdRef'], 'integer'],
-            [['root','lft','rgt','lvl','crawlerListIdRef'], 'integer'],
+            [['root','lft','rgt','lvl','CrawlerListIdRef'], 'integer'],
+            [['root','lft','rgt','lvl','CrawlerListIdRef'], 'integer'],
             [['icon_type','active','selected','disabled','readonly','visible','collapsed'], 'integer'],
             [['movable_u','movable_d','movable_l','movable_r','removable','removable_all','child_allowed'], 'integer'],
             [['key','name','icon'], 'string'],

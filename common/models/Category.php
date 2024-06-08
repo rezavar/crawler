@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use kartik\tree\TreeView;
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "tbl_category".
@@ -22,13 +24,26 @@ use Yii;
  * @property int $rgt شناسه نود سمت راست
  * @property int $lvl سطح نود
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends  \kartik\tree\models\Tree
 {
     const NewRecord = 0;
     const DeleteRecord = 1;
     const AcceptRecord = 2;
 
 
+    public $icon_type=1;
+    public $active=1;
+    public $disabled=0;
+    public $readonly=1;
+    public  $visible=1;
+    public  $collapsed=0;
+    public  $movable_u=0;
+    public  $movable_d=0;
+    public  $movable_l=0;
+    public  $movable_r=0;
+    public  $removable=1;
+    public  $removable_all=0;
+    public  $child_allowed=0;
 
     /**
      * {@inheritdoc}
@@ -37,7 +52,16 @@ class Category extends \yii\db\ActiveRecord
     {
         return 'tbl_category';
     }
+//
+    public function behaviors() {
 
+        $behaviors = parent::behaviors();
+        $module = TreeView::module();
+        $module->dataStructure["keyAttribute"] = 'CategoryId';
+        $module->dataStructure["nameAttribute"] = 'Name';
+        return $behaviors;
+
+    }
     /**
      * {@inheritdoc}
      */
@@ -51,6 +75,7 @@ class Category extends \yii\db\ActiveRecord
             [['Url'], 'string', 'max' => 500],
             [['OurCategoryId'], 'string', 'max' => 50],
             ['Status', 'default', 'value' => self::NewRecord],
+            ['selected', 'default', 'value' => 0],
         ];
     }
 
@@ -78,17 +103,40 @@ class Category extends \yii\db\ActiveRecord
 
     public function FillFromTmpCategory($CrawlerListId)
     {
-        $TmpListCategories = CategoryTmpTree::find()->andWhere(['crawlerListIdRef'=>$CrawlerListId])->asArray()->all();
+        $TmpListCategories = CategoryTmpTree::find()->andWhere(['CrawlerListIdRef'=>$CrawlerListId])->asArray()->all();
         $TmpListCategories = array_chunk($TmpListCategories,2);
         foreach ($TmpListCategories as $TmpCategories)
             $this->BatchInsertOrUpdate($TmpCategories);
-        self::updateAll(['Status'=>self::DeleteRecord],[
-            "NOT IN",
-            "Key",
+        self::updateAll([
+            'Status'=>self::DeleteRecord,
+            'icon'=>'minus-circle',
+            'root'=>0,
+            'lft'=>1,
+            'rgt'=>2,
+            'lvl'=>1,
+        ],[
+            'And',
+            ["NOT IN",
+                "Key",
                 (new \yii\db\Query())->select("key")
                     ->from(CategoryTmpTree::tableName())
-                    ->where(["=", "crawlerListIdRef", $CrawlerListId])
+                    ->where(["=", "CrawlerListIdRef", $CrawlerListId])]
+            ,[
+                'CrawlerListIdRef'=>$CrawlerListId
+            ]
         ]);
+        self::updateAll(
+            ['icon'=>'plus-circle'],
+            [
+                'AND',
+                ['Status'=>self::NewRecord],
+                ['CrawlerListIdRef'=>$CrawlerListId],
+                [
+                    'rgt' => new Expression('`lft`+1')
+                ]
+            ]
+        );
+        //<font-awesome-icon :icon="['fas', 'check-circle']" />
     }
 
     private function BatchInsertOrUpdate($TmpCategories)
@@ -105,7 +153,7 @@ class Category extends \yii\db\ActiveRecord
         ];
         foreach ($TmpCategories as $i=>$category)
             $TmpCategories[$i]=[
-                'CrawlerListIdRef'=>$category['crawlerListIdRef'],
+                'CrawlerListIdRef'=>$category['CrawlerListIdRef'],
                 'Key'=>$category['key'],
                 'Name'=>$category['name'],
                 'Url'=>$category['url'],
